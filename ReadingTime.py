@@ -28,6 +28,21 @@ def clamp(x, lo, hi):
 def safe_div(a, b, default=0.0):
     return a / b if b else default
 
+st.markdown("""
+    <style>
+    /* Cache le menu hamburger (toolbar) */
+    div[data-testid="stToolbar"] { visibility: hidden; height: 0; }
+    /* Cache l'en-tête Streamlit */
+    header[data-testid="stHeader"] { display: none; }
+    /* Cache le footer "Made with Streamlit" */
+    footer { visibility: hidden; }
+    /* Fallback anciens sélecteurs (au cas où) */
+    #MainMenu { visibility: hidden; }
+    /* Optionnel : réduit le padding haut quand le header est masqué */
+    .block-container { padding-top: 1rem; }
+    </style>
+""", unsafe_allow_html=True)
+
 st.set_page_config(
     page_title="Estimateur de temps de lecture",
     page_icon="📚",
@@ -201,5 +216,6 @@ with tabs[1]:
     st.info(
         f"📅 Au rythme de **{minutes_per_day} min/jour**, comptez environ **{days_p:.1f} jours** (~{weeks_p:.1f} semaines)."
     )
+
 
 
