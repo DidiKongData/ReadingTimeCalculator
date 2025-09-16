@@ -1,2 +1,2 @@
 # ReadingTimeCalculator
-T'as capté
+Projet Ludique Personnel
