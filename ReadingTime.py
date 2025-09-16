@@ -91,7 +91,7 @@ with st.sidebar:
         help="Pour convertir l’estimation en nombre de jours/semaines.",
     )
 
-tabs = st.tabs(["Chapitres", "Pages", "CSV détaillé"])
+tabs = st.tabs(["Chapitres", "Pages"])
 
 # ---------- Onglet Chapitres ----------
 with tabs[0]:
@@ -216,6 +216,7 @@ with tabs[1]:
     st.info(
         f"📅 Au rythme de **{minutes_per_day} min/jour**, comptez environ **{days_p:.1f} jours** (~{weeks_p:.1f} semaines)."
     )
+
 
 
 
