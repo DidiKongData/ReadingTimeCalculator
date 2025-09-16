@@ -30,32 +30,20 @@ def safe_div(a, b, default=0.0):
 
 import streamlit as st
 
-# ... ton st.set_page_config(...)
 
-# Masquer éléments Streamlit (header/menu/footer + badges/contrôles Cloud)
 st.markdown("""
-<style>
-/* Header/menu/footer */
-header[data-testid="stHeader"] { display:none; }
-div[data-testid="stToolbar"] { visibility:hidden; height:0; }
-#MainMenu { visibility:hidden; }
-footer { visibility:hidden; }
-
-/* Badge "viewer" Streamlit (bas droite) */
-div[class^="viewerBadge_"], div[class*="viewerBadge_"] { display:none !important; }
-
-/* Bouton flottant de déploiement/gestion sur Streamlit Cloud */
-div[data-testid="stDeployButton"] { display:none !important; }
-
-/* Ultrafallback : cache tout élément fixé en bas à droite.
-   Commente cette règle si elle cache un autre widget dont tu as besoin. */
-.stApp [style*="position: fixed"][style*="bottom: 0px"][style*="right: 0px"] {
-  display:none !important;
-}
-
-/* Réduit le padding haut quand le header est masqué */
-.block-container { padding-top: 1rem; }
-</style>
+    <style>
+    /* Cache le menu hamburger (toolbar) */
+    div[data-testid="stToolbar"] { visibility: hidden; height: 0; }
+    /* Cache l'en-tête Streamlit */
+    header[data-testid="stHeader"] { display: none; }
+    /* Cache le footer "Made with Streamlit" */
+    footer { visibility: hidden; }
+    /* Fallback anciens sélecteurs (au cas où) */
+    #MainMenu { visibility: hidden; }
+    /* Optionnel : réduit le padding haut quand le header est masqué */
+    .block-container { padding-top: 1rem; }
+    </style>
 """, unsafe_allow_html=True)
 
 
@@ -235,6 +223,7 @@ with tabs[1]:
     st.info(
         f"📅 Au rythme de **{minutes_per_day} min/jour**, comptez environ **{days_p:.1f} jours** (~{weeks_p:.1f} semaines)."
     )
+
 
 
 
