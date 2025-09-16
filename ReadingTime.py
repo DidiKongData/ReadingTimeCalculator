@@ -1,15 +1,9 @@
-# app.py
-# ------------------------------------------------------------
-# Estimateur de temps de lecture (livre / manga / BD)
-# L'utilisateur fournit son temps sur les premiers chapitres;
-# l'appli estime la durée totale pour l'œuvre entière.
-# ------------------------------------------------------------
 import math
 from datetime import timedelta
 
 import streamlit as st
 
-# ---------- Helpers ----------
+
 def minutes_to_hms(total_min: float):
     total_sec = int(round(total_min * 60))
     h = total_sec // 3600
@@ -34,14 +28,12 @@ def clamp(x, lo, hi):
 def safe_div(a, b, default=0.0):
     return a / b if b else default
 
-# ---------- Page config ----------
 st.set_page_config(
     page_title="Estimateur de temps de lecture",
     page_icon="📚",
     layout="centered",
 )
 
-# ---------- Header ----------
 st.markdown(
     """
     # 📚 Estimateur de temps de lecture  
@@ -209,4 +201,5 @@ with tabs[1]:
     st.info(
         f"📅 Au rythme de **{minutes_per_day} min/jour**, comptez environ **{days_p:.1f} jours** (~{weeks_p:.1f} semaines)."
     )
+
 
