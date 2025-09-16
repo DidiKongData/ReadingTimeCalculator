@@ -54,7 +54,8 @@ st.markdown(
     # 📚 Estimateur de temps de lecture  
     Donnez votre **rythme sur les premiers chapitres**, et obtenez une **estimation** pour toute l'œuvre.
 
-    *Astuce :* si vous lisez un manga/BD avec des chapitres très inégaux, utilisez l’onglet **Pages**.
+    *Astuce :* si vous lisez un manga/BD/Roman avec des chapitres très inégaux, utilisez l’onglet **Pages**.
+    Gio va pouvoir optimiser son temps pour en allouer plus + au sauvetage de vie en cardiologie.
     """
 )
 
@@ -216,6 +217,7 @@ with tabs[1]:
     st.info(
         f"📅 Au rythme de **{minutes_per_day} min/jour**, comptez environ **{days_p:.1f} jours** (~{weeks_p:.1f} semaines)."
     )
+
 
 
 
