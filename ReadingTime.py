@@ -47,7 +47,7 @@ div[class^="viewerBadge_"], div[class*="viewerBadge_"] { display:none !important
 /* Bouton flottant de déploiement/gestion sur Streamlit Cloud */
 div[data-testid="stDeployButton"] { display:none !important; }
 
-/* (Optionnel) Ultrafallback : cache tout élément fixé en bas à droite.
+/* Ultrafallback : cache tout élément fixé en bas à droite.
    Commente cette règle si elle cache un autre widget dont tu as besoin. */
 .stApp [style*="position: fixed"][style*="bottom: 0px"][style*="right: 0px"] {
   display:none !important;
@@ -235,6 +235,7 @@ with tabs[1]:
     st.info(
         f"📅 Au rythme de **{minutes_per_day} min/jour**, comptez environ **{days_p:.1f} jours** (~{weeks_p:.1f} semaines)."
     )
+
 
 
 
