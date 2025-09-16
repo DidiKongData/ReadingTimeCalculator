@@ -47,7 +47,7 @@ st.markdown(
     # 📚 Estimateur de temps de lecture  
     Donnez votre **rythme sur les premiers chapitres**, et obtenez une **estimation** pour toute l'œuvre.
 
-    *Astuce :* si vous lisez un manga/BD avec des chapitres très inégaux, utilisez l’onglet **Pages** ou importez un **CSV** simple.
+    *Astuce :* si vous lisez un manga/BD avec des chapitres très inégaux, utilisez l’onglet **Pages**.
     """
 )
 
@@ -210,94 +210,3 @@ with tabs[1]:
         f"📅 Au rythme de **{minutes_per_day} min/jour**, comptez environ **{days_p:.1f} jours** (~{weeks_p:.1f} semaines)."
     )
 
-# ---------- Onglet CSV ----------
-with tabs[2]:
-    st.subheader("CSV détaillé (optionnel)")
-    st.caption(
-        "Importez un CSV simple avec **chapitre,page_count** (ou **chapitre,minutes** si vous avez déjà mesuré). "
-        "On calcule l'estimation en additionnant chaque ligne."
-    )
-    sample_csv = "chapitre,page_count\n1,25\n2,28\n3,35\n4,20\n"
-    st.code(sample_csv, language="csv")
-    uploaded = st.file_uploader("Déposer votre CSV", type=["csv"])
-
-    csv_mode = st.radio(
-        "Les valeurs correspondent à…",
-        ["Pages par chapitre", "Minutes par chapitre (mesurées)"],
-        horizontal=True,
-    )
-
-    if uploaded is not None:
-        import csv
-        import io
-
-        reader = csv.DictReader(io.StringIO(uploaded.read().decode("utf-8")))
-        rows = list(reader)
-        valid = all(("chapitre" in r and (("page_count" in r) or ("minutes" in r))) for r in rows)
-        if not valid:
-            st.error("Colonnes attendues : `chapitre,page_count` **ou** `chapitre,minutes`.")
-        else:
-            total_min_csv = 0.0
-            total_pages_csv = 0
-            total_items = 0
-
-            for r in rows:
-                total_items += 1
-                if csv_mode == "Pages par chapitre":
-                    try:
-                        pages = float(r.get("page_count", 0))
-                    except ValueError:
-                        pages = 0
-                    total_pages_csv += pages
-                    # Estime via vitesse par page issue de l'onglet Pages si dispo, sinon demande une vitesse de secours
-                else:
-                    try:
-                        minutes = float(r.get("minutes", 0))
-                    except ValueError:
-                        minutes = 0
-                    total_min_csv += minutes
-
-            if csv_mode == "Pages par chapitre":
-                fallback_speed = st.number_input(
-                    "Vitesse moyenne (min/page) pour conversion",
-                    min_value=0.01,
-                    value=0.20,
-                    step=0.01,
-                    help="Si vous n'avez pas mesuré de vitesse, mettez une estimation (ex. 0.2 = 12 s/page).",
-                )
-                per_ch_pause = st.number_input(
-                    "Pause moyenne par chapitre (min) (appliquée à chaque ligne)",
-                    min_value=0.0,
-                    value=pause_per_chapter,
-                    step=0.5,
-                )
-                # On ne connaît pas le nombre de chapitres par ligne -> pause appliquée à CHAQUE ligne
-                total_min_csv = total_pages_csv * fallback_speed + total_items * per_ch_pause
-
-            low_c = total_min_csv * (1 - buffer_pct / 100.0)
-            high_c = total_min_csv * (1 + buffer_pct / 100.0)
-
-            st.markdown("---")
-            st.metric("Temps estimé (CSV)", format_duration(total_min_csv))
-            st.markdown(
-                f"**Fourchette ±{buffer_pct}%** : {format_duration(low_c)} ⟶ **{format_duration(high_c)}**"
-            )
-
-            days_c = total_min_csv / minutes_per_day if minutes_per_day > 0 else math.inf
-            weeks_c = days_c / 7
-            st.info(
-                f"📅 Au rythme de **{minutes_per_day} min/jour**, comptez environ **{days_c:.1f} jours** (~{weeks_c:.1f} semaines)."
-            )
-
-# ---------- Pied de page ----------
-with st.expander("📎 Notes & conseils"):
-    st.markdown(
-        """
-        - **Règle simple** : temps total ≈ (durée moyenne par chapitre + pauses) × (chapitres totaux).
-        - La **marge d'incertitude** couvre les variations de densité/complexité, la fatigue, etc.
-        - Pour des œuvres très hétérogènes, privilégiez **Pages** ou **CSV**.
-        - Le paramètre *Temps de pause par chapitre* modélise les micro-pauses (boire un verre d’eau, prendre des notes…).
-        """
-    )
-
-st.caption("Fait avec ❤️ et Streamlit")
